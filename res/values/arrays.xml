@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="wallpapers">
+        <item>wallpaper_snow_leopard</item>
+        <item>grumpy_ray</item>
+
+    </array>
+    <array name="extra_wallpapers">
+        <item>duck_fun</item>
+    </array>
+</resources>

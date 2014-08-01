@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_wallpaperx" default="compile.module.wallpaperx">
+  <dirname property="module.wallpaperx.basedir" file="${ant.file.module_wallpaperx}"/>
+  
+  <property name="module.jdk.home.wallpaperx" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.wallpaperx" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.wallpaperx" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.wallpaperx" value="${compiler.args}"/>
+  
+  <property name="wallpaperx.output.dir" value="${module.wallpaperx.basedir}/out/production/WallpaperX"/>
+  <property name="wallpaperx.testoutput.dir" value="${module.wallpaperx.basedir}/out/test/WallpaperX"/>
+  
+  <path id="wallpaperx.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="wallpaperx.module.production.classpath">
+    <path refid="${module.jdk.classpath.wallpaperx}"/>
+  </path>
+  
+  <path id="wallpaperx.runtime.production.module.classpath">
+    <pathelement location="${wallpaperx.output.dir}"/>
+  </path>
+  
+  <path id="wallpaperx.module.classpath">
+    <path refid="${module.jdk.classpath.wallpaperx}"/>
+    <pathelement location="${wallpaperx.output.dir}"/>
+  </path>
+  
+  <path id="wallpaperx.runtime.module.classpath">
+    <pathelement location="${wallpaperx.testoutput.dir}"/>
+    <pathelement location="${wallpaperx.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.wallpaperx">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.wallpaperx">
+    <patternset refid="excluded.from.module.wallpaperx"/>
+  </patternset>
+  
+  <path id="wallpaperx.module.sourcepath">
+    <dirset dir="${module.wallpaperx.basedir}">
+      <include name="src"/>
+      <include name="gen"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.wallpaperx" depends="compile.module.wallpaperx.production,compile.module.wallpaperx.tests" description="Compile module WallpaperX"/>
+  
+  <target name="compile.module.wallpaperx.production" depends="register.custom.compilers" description="Compile module WallpaperX; production classes">
+    <mkdir dir="${wallpaperx.output.dir}"/>
+    <javac2 destdir="${wallpaperx.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.wallpaperx}/javac">
+      <compilerarg line="${compiler.args.wallpaperx}"/>
+      <bootclasspath refid="wallpaperx.module.bootclasspath"/>
+      <classpath refid="wallpaperx.module.production.classpath"/>
+      <src refid="wallpaperx.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.wallpaperx"/>
+    </javac2>
+    
+    <copy todir="${wallpaperx.output.dir}">
+      <fileset dir="${module.wallpaperx.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.wallpaperx.basedir}/gen">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.wallpaperx.tests" depends="register.custom.compilers,compile.module.wallpaperx.production" description="compile module WallpaperX; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.wallpaperx" description="cleanup module">
+    <delete dir="${wallpaperx.output.dir}"/>
+    <delete dir="${wallpaperx.testoutput.dir}"/>
+  </target>
+</project>
